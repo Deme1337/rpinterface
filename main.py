@@ -1,18 +1,43 @@
 import psutil
 
-from flask import Flask, render_template
+from flask import Flask, render_template, Response
 #from gpiozero import CPUTemperature
 
 from subprocess import check_output
+import os
+import cv2
+import socket 
+import io 
 
-
+vc = cv2.VideoCapture(0) 
 app = Flask(__name__)
 #app.debug = True # Uncomment to debug
 
 @app.route('/')
 def home():
     #temp=temp()
-    return render_template("index.html", cpu=cpu(), memory=memory(), disk=disk(), temp=50, ip=ipaddr())
+    return render_template("index.html", cpu=cpu(), memory=memory(), disk=disk(), temp=50, ip=ipaddr(), video = "No Video")
+
+
+@app.route('/video')
+def video():
+    #temp=temp()
+    return render_template("index.html", cpu=cpu(), memory=memory(), disk=disk(), temp=50, ip=ipaddr(), video = gen())
+
+
+'''@app.route('/video') 
+def video_feed(): 
+   """Video streaming route. Put this in the src attribute of an img tag.""" 
+   return Response(gen(), 
+                   mimetype='multipart/x-mixed-replace; boundary=frame') '''
+
+def gen(): 
+   """Video streaming generator function.""" 
+   while True: 
+       rval, frame = vc.read() 
+       cv2.imwrite('pic.jpg', frame) 
+       yield (b'--frame\r\n' 
+              b'Content-Type: image/jpeg\r\n\r\n' + open('pic.jpg', 'rb').read() + b'\r\n') 
 
 
 def cpu():
@@ -41,4 +66,4 @@ def disk():
     return str(free) + 'GB free / ' + str(total) + 'GB total ( ' + str(disk.percent) + '% )'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True, threaded=True)

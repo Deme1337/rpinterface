@@ -26,10 +26,10 @@
         
     <body>
         <!--VIDEO FROM DEVICE-->
-        <div class="embed-responsive embed-responsive-21by9">
+        <!---<div class="embed-responsive embed-responsive-21by9">
         <iframe class="embed-responsive-item" src="http://localhost:8001/" width="700" height="600" title="WEBCAM"></iframe>
-        </div>
-
+        </div> -->
+        <img src="{{ url_for('video_feed') }}"> 
         
         <!-- System carousel -->
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="padding-top: 50px;">
