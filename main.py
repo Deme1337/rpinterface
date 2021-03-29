@@ -16,7 +16,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     #temp=temp()
-    return render_template("index.html", cpu=cpu(), memory=memory(), disk=disk(), temp=50, ip=ipaddr(), video = "No Video")
+    return render_template("index.html", cpu=cpu(), memory=memory(), disk=disk(), temp=50, ip=ipaddr(), video = gen())
 
 
 @app.route('/video')
@@ -25,11 +25,11 @@ def video():
     return render_template("index.html", cpu=cpu(), memory=memory(), disk=disk(), temp=50, ip=ipaddr(), video = gen())
 
 
-'''@app.route('/video') 
+@app.route('/video_feed') 
 def video_feed(): 
    """Video streaming route. Put this in the src attribute of an img tag.""" 
    return Response(gen(), 
-                   mimetype='multipart/x-mixed-replace; boundary=frame') '''
+                   mimetype='multipart/x-mixed-replace; boundary=frame') 
 
 def gen(): 
    """Video streaming generator function.""" 
